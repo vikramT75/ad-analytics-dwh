@@ -1,10 +1,3 @@
-/*
-===============================================================================
-Script: init_database.sql
-Description: Drops and recreates the DataWarehouse database and schemas.
-===============================================================================
-*/
-
 USE master;
 GO
 

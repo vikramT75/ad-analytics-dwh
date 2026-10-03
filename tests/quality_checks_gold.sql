@@ -1,19 +1,3 @@
-/*
-===============================================================================
-Quality Checks: Gold Layer
-===============================================================================
-Script Purpose:
-    Validates the Gold layer (Star Schema) integrity. These checks ensure:
-    - Surrogate key uniqueness across all dimension tables
-    - Referential integrity between fact tables and dimensions
-    - Business metric reasonableness (CTR, CVR within valid ranges)
-    - Date dimension completeness (all fact dates have a dim_date row)
-    - SCD Type-2 integrity for dim_campaigns
-
-    ALL checks should return ZERO ROWS / ZERO COUNTS to pass.
-===============================================================================
-*/
-
 PRINT '================================================================';
 PRINT 'GOLD LAYER QUALITY CHECKS';
 PRINT '================================================================';

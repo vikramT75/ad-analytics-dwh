@@ -1,20 +1,3 @@
-/*
-===============================================================================
-Quality Checks: Bronze Layer
-===============================================================================
-Script Purpose:
-    Validates raw ingested data in the Bronze layer. Checks run AFTER
-    the bronze load procedure completes. Results are informational --
-    non-zero result sets indicate data quality issues to investigate.
-
-    These checks help quantify "dirty" data before Silver cleansing.
-
-Usage:
-    Run after EXEC bronze.load_bronze completes.
-    Expectation: All checks return row counts; note anomaly rates.
-===============================================================================
-*/
-
 PRINT '================================================================';
 PRINT 'BRONZE LAYER QUALITY CHECKS';
 PRINT '================================================================';

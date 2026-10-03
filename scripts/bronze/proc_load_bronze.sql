@@ -1,10 +1,3 @@
-/*
-===============================================================================
-Script: proc_load_bronze.sql
-Description: Stored procedure to load all Bronze layer tables.
-===============================================================================
-*/
-
 USE DataWarehouse;
 GO
 
@@ -30,62 +23,62 @@ BEGIN
         PRINT 'Batch Start Time: ' + CONVERT(NVARCHAR, @batch_start_time, 120);
         PRINT '====================================================';
 
-        -- bronze.dsp_impressions
+        -- dsp_impressions
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.dsp_impressions...';
         TRUNCATE TABLE bronze.dsp_impressions;
         PRINT 'Loading bronze.dsp_impressions...';
-        SET @sql = 'BULK INSERT bronze.dsp_impressions FROM ''' + @data_path + 'dsp_impressions.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.dsp_impressions FROM ''' + @data_path + 'source_dsp\impressions.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.dsp_impressions load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';
 
-        -- bronze.dsp_clicks
+        -- dsp_clicks
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.dsp_clicks...';
         TRUNCATE TABLE bronze.dsp_clicks;
         PRINT 'Loading bronze.dsp_clicks...';
-        SET @sql = 'BULK INSERT bronze.dsp_clicks FROM ''' + @data_path + 'dsp_clicks.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.dsp_clicks FROM ''' + @data_path + 'source_dsp\clicks.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.dsp_clicks load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';
 
-        -- bronze.crm_campaigns
+        -- crm_campaigns
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.crm_campaigns...';
         TRUNCATE TABLE bronze.crm_campaigns;
         PRINT 'Loading bronze.crm_campaigns...';
-        SET @sql = 'BULK INSERT bronze.crm_campaigns FROM ''' + @data_path + 'crm_campaigns.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.crm_campaigns FROM ''' + @data_path + 'source_crm\campaigns.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.crm_campaigns load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';
 
-        -- bronze.crm_advertisers
+        -- crm_advertisers
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.crm_advertisers...';
         TRUNCATE TABLE bronze.crm_advertisers;
         PRINT 'Loading bronze.crm_advertisers...';
-        SET @sql = 'BULK INSERT bronze.crm_advertisers FROM ''' + @data_path + 'crm_advertisers.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.crm_advertisers FROM ''' + @data_path + 'source_crm\advertisers.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.crm_advertisers load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';
 
-        -- bronze.device_profiles
+        -- device_profiles
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.device_profiles...';
         TRUNCATE TABLE bronze.device_profiles;
         PRINT 'Loading bronze.device_profiles...';
-        SET @sql = 'BULK INSERT bronze.device_profiles FROM ''' + @data_path + 'device_profiles.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.device_profiles FROM ''' + @data_path + 'source_device\device_profiles.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.device_profiles load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';
 
-        -- bronze.device_app_installs
+        -- device_app_installs
         SET @start_time = GETDATE();
         PRINT 'Truncating bronze.device_app_installs...';
         TRUNCATE TABLE bronze.device_app_installs;
         PRINT 'Loading bronze.device_app_installs...';
-        SET @sql = 'BULK INSERT bronze.device_app_installs FROM ''' + @data_path + 'device_app_installs.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
+        SET @sql = 'BULK INSERT bronze.device_app_installs FROM ''' + @data_path + 'source_device\app_installs.csv'' WITH (FIELDTERMINATOR='','', ROWTERMINATOR=''\n'', FIRSTROW=2, CODEPAGE=''65001'');';
         EXEC sp_executesql @sql;
         SET @end_time = GETDATE();
         PRINT 'bronze.device_app_installs load completed in ' + CAST(DATEDIFF(ms, @start_time, @end_time) AS NVARCHAR) + ' ms.';

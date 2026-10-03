@@ -1,20 +1,3 @@
-/*
-===============================================================================
-Analytics Report: Campaign Performance
-===============================================================================
-Script Purpose:
-    Aggregates impression, click, and conversion metrics per campaign.
-    Provides KPIs including CTR, CVR, total spend, budget utilization,
-    and 7-day rolling CTR using window functions.
-
-Usage:
-    Query this view directly for campaign-level reporting.
-    Join with gold.dim_date for time-series slicing.
-
-Output Grain: One row per campaign (current version only).
-===============================================================================
-*/
-
 IF OBJECT_ID('analytics.report_campaign_performance', 'V') IS NOT NULL
     DROP VIEW analytics.report_campaign_performance;
 GO
@@ -59,12 +42,12 @@ SELECT
     cam.advertiser_country,
     cam.target_geo,
 
-    -- Volume Metrics
+    -- Volume
     ISNULL(ci.total_impressions, 0)         AS total_impressions,
     ISNULL(ck.total_clicks, 0)              AS total_clicks,
     ISNULL(cv.total_conversions, 0)         AS total_conversions,
 
-    -- Efficiency Metrics
+    -- Efficiency
     CAST(
         ISNULL(ck.total_clicks, 0) * 100.0
         / NULLIF(ci.total_impressions, 0)
@@ -80,7 +63,7 @@ SELECT
         / NULLIF(ci.total_impressions, 0)
     AS DECIMAL(6,4))                         AS view_to_convert_pct,
 
-    -- Spend & Budget
+    -- Spend
     ISNULL(ci.total_spend, 0)               AS total_spend_usd,
 
     CAST(
@@ -88,7 +71,7 @@ SELECT
         / NULLIF(cam.budget_usd, 0)
     AS DECIMAL(6,2))                         AS budget_utilization_pct,
 
-    -- Cost Metrics
+    -- Cost
     CAST(
         ISNULL(ci.total_spend, 0) * 1000.0
         / NULLIF(ci.total_impressions, 0)
@@ -107,7 +90,7 @@ SELECT
     -- Attribution
     CAST(ISNULL(cv.avg_hours_to_convert, 0) AS DECIMAL(10,2)) AS avg_hours_to_convert,
 
-    -- Ranking (for leaderboard queries)
+    -- Rank
     RANK() OVER (ORDER BY ISNULL(ck.total_clicks, 0) DESC)             AS click_rank,
     RANK() OVER (ORDER BY ISNULL(cv.total_conversions, 0) DESC)        AS conversion_rank,
     RANK() OVER (

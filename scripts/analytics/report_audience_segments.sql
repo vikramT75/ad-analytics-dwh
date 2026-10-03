@@ -1,24 +1,3 @@
-/*
-===============================================================================
-Analytics Report: Audience Segments
-===============================================================================
-Script Purpose:
-    Breaks down impression, click, and conversion performance by audience
-    segment dimensions: device type, OS, age band, and geography.
-
-    This mirrors the kind of audience intelligence Mobilewalla specializes in
-    -- understanding WHICH audiences drive performance for advertisers.
-
-Usage:
-    Query this view to answer:
-    - "Which device type has the highest CTR?"
-    - "Which age band converts best for Performance campaigns?"
-    - "How does mobile vs CTV performance compare?"
-
-Output Grain: One row per unique segment combination.
-===============================================================================
-*/
-
 IF OBJECT_ID('analytics.report_audience_segments', 'V') IS NOT NULL
     DROP VIEW analytics.report_audience_segments;
 GO

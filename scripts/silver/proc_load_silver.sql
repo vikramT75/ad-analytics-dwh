@@ -1,10 +1,3 @@
-/*
-===============================================================================
-Script: proc_load_silver.sql
-Description: Stored procedure to load all Silver layer tables.
-===============================================================================
-*/
-
 USE DataWarehouse;
 GO
 

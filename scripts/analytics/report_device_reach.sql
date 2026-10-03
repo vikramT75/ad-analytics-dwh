@@ -1,28 +1,3 @@
-/*
-===============================================================================
-Analytics Report: Device Reach & Frequency
-===============================================================================
-Script Purpose:
-    Analyzes device-level reach and impression frequency per campaign.
-    Helps answer questions about audience saturation, frequency capping,
-    and cross-device overlap.
-
-    Key metrics:
-    - Unique device reach per campaign
-    - Average frequency (impressions per device)
-    - Frequency distribution (1x, 2-3x, 4-5x, 6+ impressions)
-    - Cross-device: devices seen on both Mobile and CTV
-    - Geo-level reach breakdown
-
-Usage:
-    - Identify over-served devices (frequency > 5) for exclusion lists.
-    - Find underpenetrated geos for budget reallocation.
-    - Measure true unique reach vs gross impressions.
-
-Output Grain: One row per campaign per device-type-geo combination.
-===============================================================================
-*/
-
 IF OBJECT_ID('analytics.report_device_reach', 'V') IS NOT NULL
     DROP VIEW analytics.report_device_reach;
 GO

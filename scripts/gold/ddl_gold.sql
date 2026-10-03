@@ -1,14 +1,7 @@
-/*
-===============================================================================
-Script: ddl_gold.sql
-Description: DDL for Gold layer tables and views.
-===============================================================================
-*/
-
 USE DataWarehouse;
 GO
 
--- 1. Create dim_date
+-- dim_date
 IF OBJECT_ID('gold.dim_date', 'U') IS NULL
 BEGIN
     CREATE TABLE gold.dim_date (
@@ -26,7 +19,7 @@ BEGIN
 END
 GO
 
--- 2. Create dim_campaigns (SCD2)
+-- dim_campaigns
 IF OBJECT_ID('gold.dim_campaigns', 'U') IS NULL
 BEGIN
     CREATE TABLE gold.dim_campaigns (
@@ -37,6 +30,7 @@ BEGIN
         budget_usd DECIMAL(12,2),
         start_date DATE,
         end_date DATE,
+        campaign_duration_days INT,
         status NVARCHAR(20),
         target_geo NVARCHAR(200),
         advertiser_id NVARCHAR(50),
@@ -50,7 +44,7 @@ BEGIN
 END
 GO
 
--- 3. Create dim_advertisers View
+-- dim_advertisers
 IF OBJECT_ID('gold.dim_advertisers', 'V') IS NOT NULL
     DROP VIEW gold.dim_advertisers;
 GO
@@ -66,7 +60,7 @@ SELECT
 FROM silver.crm_advertisers;
 GO
 
--- 4. Create dim_devices View
+-- dim_devices
 IF OBJECT_ID('gold.dim_devices', 'V') IS NOT NULL
     DROP VIEW gold.dim_devices;
 GO
@@ -88,7 +82,7 @@ SELECT
 FROM silver.device_profiles;
 GO
 
--- 5. Create dim_apps View
+-- dim_apps
 IF OBJECT_ID('gold.dim_apps', 'V') IS NOT NULL
     DROP VIEW gold.dim_apps;
 GO
@@ -103,7 +97,7 @@ FROM silver.device_app_installs
 GROUP BY app_id;
 GO
 
--- 6. Create fact_impressions View
+-- fact_impressions
 IF OBJECT_ID('gold.fact_impressions', 'V') IS NOT NULL
     DROP VIEW gold.fact_impressions;
 GO
@@ -127,7 +121,7 @@ LEFT JOIN gold.dim_date dd ON CAST(i.event_ts AS DATE) = dd.full_date
 LEFT JOIN silver.dsp_clicks cl ON i.imp_id = cl.imp_id;
 GO
 
--- 7. Create fact_clicks View
+-- fact_clicks
 IF OBJECT_ID('gold.fact_clicks', 'V') IS NOT NULL
     DROP VIEW gold.fact_clicks;
 GO
@@ -145,7 +139,7 @@ LEFT JOIN gold.dim_devices dev ON c.device_id = dev.device_id
 LEFT JOIN gold.dim_date dd ON CAST(c.event_ts AS DATE) = dd.full_date;
 GO
 
--- 8. Create fact_conversions View
+-- fact_conversions
 IF OBJECT_ID('gold.fact_conversions', 'V') IS NOT NULL
     DROP VIEW gold.fact_conversions;
 GO

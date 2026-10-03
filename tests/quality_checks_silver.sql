@@ -1,16 +1,3 @@
-/*
-===============================================================================
-Quality Checks: Silver Layer
-===============================================================================
-Script Purpose:
-    Validates cleansed data in the Silver layer. All checks should return
-    ZERO ROWS or ZERO COUNTS to pass (except check 1 row counts).
-
-    Run after EXEC silver.load_silver completes.
-    Investigate and fix any non-zero results before loading Gold.
-===============================================================================
-*/
-
 PRINT '================================================================';
 PRINT 'SILVER LAYER QUALITY CHECKS';
 PRINT '================================================================';

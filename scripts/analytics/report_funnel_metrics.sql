@@ -1,24 +1,3 @@
-/*
-===============================================================================
-Analytics Report: Funnel Metrics
-===============================================================================
-Script Purpose:
-    Models the full ad-tech conversion funnel:
-        Impressions --> Clicks --> Conversions (App Installs)
-
-    Provides funnel analysis by campaign objective and weekly cohorts.
-    Includes time-to-convert distribution and attribution window analysis
-    (1-day vs 3-day vs 7-day post-click conversion rates).
-
-Usage:
-    - Identify where campaigns lose users in the funnel.
-    - Compare short vs long attribution windows.
-    - Analyze which campaign objectives convert fastest.
-
-Output Grain: One row per campaign per week (for cohort view).
-===============================================================================
-*/
-
 IF OBJECT_ID('analytics.report_funnel_metrics', 'V') IS NOT NULL
     DROP VIEW analytics.report_funnel_metrics;
 GO

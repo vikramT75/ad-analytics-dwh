@@ -1,10 +1,3 @@
-/*
-===============================================================================
-Script: proc_load_gold.sql
-Description: Stored procedure to load Gold layer tables.
-===============================================================================
-*/
-
 USE DataWarehouse;
 GO
 
@@ -67,7 +60,7 @@ BEGIN
         SET @start_time = GETDATE();
         PRINT 'Loading gold.dim_campaigns (SCD Type-2)...';
         
-        -- Temporary table for source data
+        -- Temp source data
         IF OBJECT_ID('tempdb..#SourceCampaigns') IS NOT NULL DROP TABLE #SourceCampaigns;
         
         SELECT 
@@ -77,6 +70,7 @@ BEGIN
             c.budget_usd,
             c.start_date,
             c.end_date,
+            c.campaign_duration_days,
             c.status,
             c.target_geo,
             c.advertiser_id,
@@ -87,7 +81,7 @@ BEGIN
         FROM silver.crm_campaigns c
         LEFT JOIN silver.crm_advertisers a ON c.advertiser_id = a.advertiser_id;
 
-        -- UPDATE existing records that have changed (Expire them)
+        -- Expire old records
         UPDATE target
         SET 
             dwh_expiry_date = CAST(GETDATE() AS DATE), 
@@ -104,14 +98,14 @@ BEGIN
             ISNULL(source.advertiser_name, '') <> ISNULL(target.advertiser_name, '')
         );
 
-        -- INSERT new records for changed rows (the new active version)
+        -- Insert new versions
         INSERT INTO gold.dim_campaigns (
-            campaign_id, campaign_name, objective, budget_usd, start_date, end_date, 
+            campaign_id, campaign_name, objective, budget_usd, start_date, end_date, campaign_duration_days,
             status, target_geo, advertiser_id, advertiser_name, advertiser_industry, 
             advertiser_country, dwh_effective_date, dwh_expiry_date, dwh_is_current
         )
         SELECT 
-            s.campaign_id, s.campaign_name, s.objective, s.budget_usd, s.start_date, s.end_date, 
+            s.campaign_id, s.campaign_name, s.objective, s.budget_usd, s.start_date, s.end_date, s.campaign_duration_days,
             s.status, s.target_geo, s.advertiser_id, s.advertiser_name, s.advertiser_industry, 
             s.advertiser_country, CAST(GETDATE() AS DATE), '9999-12-31', 1
         FROM #SourceCampaigns s
@@ -124,14 +118,14 @@ BEGIN
             WHERE t.campaign_id = s.campaign_id AND t.dwh_is_current = 1
         );
 
-        -- INSERT entirely new campaigns
+        -- Insert new campaigns
         INSERT INTO gold.dim_campaigns (
-            campaign_id, campaign_name, objective, budget_usd, start_date, end_date, 
+            campaign_id, campaign_name, objective, budget_usd, start_date, end_date, campaign_duration_days,
             status, target_geo, advertiser_id, advertiser_name, advertiser_industry, 
             advertiser_country, dwh_effective_date, dwh_expiry_date, dwh_is_current
         )
         SELECT 
-            s.campaign_id, s.campaign_name, s.objective, s.budget_usd, s.start_date, s.end_date, 
+            s.campaign_id, s.campaign_name, s.objective, s.budget_usd, s.start_date, s.end_date, s.campaign_duration_days,
             s.status, s.target_geo, s.advertiser_id, s.advertiser_name, s.advertiser_industry, 
             s.advertiser_country, CAST(GETDATE() AS DATE), '9999-12-31', 1
         FROM #SourceCampaigns s
